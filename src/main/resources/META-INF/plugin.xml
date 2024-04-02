@@ -5,21 +5,22 @@
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-    <name>Jcontrolvoice</name>
+    <name>JControlVoice</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="" url="https://www.yourcompany.com"></vendor>
+    <vendor email="dev.days.participant56@itmo.ru" url="https://mse.itmo.ru/">MSE ITMO</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-        <html>
-        <dl>
-            <dt>1.0</dt>
-            <dd>Introduces plugin for voice action call.</dd>
-        </dl>
-        </html>
+        <h1>JControl plugin</h1>
+    <p>Plugin to control basic functionality </p>
+    <ol>
+        <li>Click on the icon</li>
+        <li>Say command</li>
+        <li>Enjoy</li>
+    </ol>
   ]]></description>
 
     <!-- Product and plugin compatibility requirements.
@@ -29,8 +30,33 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup id="JControl"
+                           displayType="BALLOON"
+        />
         <projectConfigurable id="voiceCommandsConfigurable" displayName="Voice Commands"
                              instance="ru.itmo.devdays.jcontrolvoice.configuration.VoiceCommandConfigurable"/>
 
     </extensions>
+    <actions>
+        <action
+                id="org.ru.itmo.actions.PopupDialogAction"
+                class="org.ru.itmo.actions.PopupDialogAction"
+                icon="AllIcons.CodeWithMe.CwmMicOn"
+                text="Popup Dialog Action"
+                description="SDK action example">
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+        </action>
+        <action id="org.ru.itmo.actions.ToolbarIconAction"
+                class="org.ru.itmo.actions.ToolbarIconAction"
+                text="Voice"
+                icon="AllIcons.CodeWithMe.CwmMicOn"
+                description="Test desctioption">
+            <keyboard-shortcut
+                    keymap="$default"
+                    first-keystroke="control alt G"
+                    second-keystroke="G"/>
+            <add-to-group group-id="MainToolbarGeneralActionsGroup" anchor="first"/>
+<!--            <add-to-group group-id="MainToolbarGeneralActionsGroup" anchor="first"/>-->
+        </action>
+    </actions>
 </idea-plugin>
