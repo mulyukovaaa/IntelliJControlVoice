@@ -29,14 +29,17 @@
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
-    <extensions defaultExtensionNs="com.intellij">
 
+    <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup id="JControl"
+                           displayType="BALLOON"
+        />
     </extensions>
     <actions>
         <action
                 id="org.ru.itmo.actions.PopupDialogAction"
                 class="org.ru.itmo.actions.PopupDialogAction"
-                icon="AllIcons.Actions.ProfileCPU"
+                icon="AllIcons.CodeWithMe.CwmMicOn"
                 text="Popup Dialog Action"
                 description="SDK action example">
             <add-to-group group-id="ToolsMenu" anchor="first"/>
@@ -44,9 +47,14 @@
         <action id="org.ru.itmo.actions.ToolbarIconAction"
                 class="org.ru.itmo.actions.ToolbarIconAction"
                 text="Voice"
-                icon="AllIcons.Actions.ProfileCPU"
+                icon="AllIcons.CodeWithMe.CwmMicOn"
                 description="Test desctioption">
-            <add-to-group group-id="ToolsBasicGroup" anchor="first"/>
+            <keyboard-shortcut
+                    keymap="$default"
+                    first-keystroke="control alt G"
+                    second-keystroke="G"/>
+            <add-to-group group-id="MainToolbarGeneralActionsGroup" anchor="first"/>
+<!--            <add-to-group group-id="MainToolbarGeneralActionsGroup" anchor="first"/>-->
         </action>
     </actions>
 </idea-plugin>

@@ -1,6 +1,10 @@
 package org.ru.itmo.actions;
 
 
+import com.github.weisj.jsvg.S;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -8,7 +12,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jsonProtocol.Optional;
 
+import javax.management.NotificationFilter;
 import javax.swing.*;
 
 public class ToolbarIconAction extends AnAction {
@@ -35,15 +41,40 @@ public class ToolbarIconAction extends AnAction {
         super(text, description, icon);
     }
 
-    @Override
-    public void actionPerformed(@NotNull AnActionEvent event) {
+    private void showPopup(@NotNull AnActionEvent event, String title, String message){
         Project currentProject = event.getProject();
-
         Messages.showMessageDialog(
                 currentProject,
-                "Message",
-                "Title",
+                message,
+                title,
                 Messages.getInformationIcon());
+    }
+
+    private void showErrorNotification(String message){
+        Notification notification = new Notification(
+                "JControl",
+                message,
+                NotificationType.ERROR
+        );
+
+        Notifications.Bus.notify(notification);
+    }
+
+    private void showInfoNotification(String message){
+        Notification notification = new Notification(
+                "JControl",
+                message,
+                NotificationType.INFORMATION
+        );
+        notification.addAction(new PopupDialogAction());
+        Notifications.Bus.notify(notification);
+    }
+
+    @Override
+    public void actionPerformed(@NotNull AnActionEvent event) {
+//        showErrorNotification("TestMessage");
+        showInfoNotification("TestMessage");
+
     }
 
     @Override
