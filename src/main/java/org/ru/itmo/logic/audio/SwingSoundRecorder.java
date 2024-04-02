@@ -1,4 +1,4 @@
-package com.devdays;
+package org.ru.itmo.logic.audio;
 
 import javax.swing.*;
 import java.awt.*;
@@ -82,7 +82,7 @@ public class SwingSoundRecorder {
         statusLabel.setBounds(10, 240, 414, 14);
         frame.getContentPane().add(statusLabel);
 
-        soundRecordingUtil = new SoundRecordingUtil();
+        soundRecordingUtil = new SoundRecordingUtil("records\\recorded.wav");
         audioPlayer = new AudioPlayer();
     }
 }

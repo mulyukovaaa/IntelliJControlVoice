@@ -13,11 +13,15 @@ import com.intellij.openapi.ui.Messages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jsonProtocol.Optional;
+import org.ru.itmo.logic.audioinvoker.AudioInterface;
+import org.ru.itmo.logic.audioinvoker.SimpleAudioInvoker;
 
 import javax.management.NotificationFilter;
 import javax.swing.*;
+import java.util.logging.Logger;
 
 public class ToolbarIconAction extends AnAction {
+    public Logger logger = Logger.getLogger(ToolbarIconAction.class.getName());
 
     @Override
     public @NotNull ActionUpdateThread getActionUpdateThread() {
@@ -70,10 +74,19 @@ public class ToolbarIconAction extends AnAction {
         Notifications.Bus.notify(notification);
     }
 
+    private static final AudioInterface audioInterface = new SimpleAudioInvoker();
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
-//        showErrorNotification("TestMessage");
-        showInfoNotification("TestMessage");
+
+        if (!audioInterface.isRunning()){
+            showInfoNotification("Recording started");
+            audioInterface.start();
+        }
+        else {
+            showInfoNotification("Recording stopped");
+            audioInterface.stop();
+        }
+
 
     }
 

@@ -1,4 +1,4 @@
-package com.devdays;
+package org.ru.itmo.logic.audio;
 
 import javax.swing.*;
 import java.util.Timer;
