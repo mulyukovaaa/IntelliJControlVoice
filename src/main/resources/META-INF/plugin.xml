@@ -58,5 +58,20 @@
             <add-to-group group-id="MainToolbarGeneralActionsGroup" anchor="first"/>
 <!--            <add-to-group group-id="MainToolbarGeneralActionsGroup" anchor="first"/>-->
         </action>
+        <action id="OpenTerminalAction" class="org.ru.itmo.logic.caller.OpenTerminalAction" text="Open Terminal" description="Opens the terminal window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="HideTerminalAction" class="org.ru.itmo.logic.caller.HideTerminalAction" text="Close Terminal" description="Closes the terminal window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="OpenNewClass" class="org.ru.itmo.logic.caller.OpenNewClass" text="Open New Class" description="Open create class window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="OpenNextCurrentFile" class="org.ru.itmo.logic.caller.OpenNextCurrentFile" text="Open Next Current File" description="Open next tab">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="OpenPreviousCurrentFile" class="org.ru.itmo.logic.caller.OpenPreviousCurrentFile" text="Open Previous Current File" description="Open previous tab">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
     </actions>
 </idea-plugin>

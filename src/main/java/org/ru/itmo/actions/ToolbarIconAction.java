@@ -1,22 +1,17 @@
 package org.ru.itmo.actions;
 
 
-import com.github.weisj.jsvg.S;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
-import com.intellij.openapi.actionSystem.ActionUpdateThread;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jsonProtocol.Optional;
 import org.ru.itmo.logic.audioinvoker.AudioInterface;
 import org.ru.itmo.logic.audioinvoker.SimpleAudioInvoker;
 
-import javax.management.NotificationFilter;
 import javax.swing.*;
 import java.util.logging.Logger;
 
@@ -81,13 +76,17 @@ public class ToolbarIconAction extends AnAction {
         if (!audioInterface.isRunning()){
             showInfoNotification("Recording started");
             audioInterface.start();
+//            AnAction createProjectAction = ActionManager.getInstance().getAction("Exit");
+//            createProjectAction.actionPerformed(AnActionEvent.createFromDataContext("Exit", new Presentation(), DataManager.getInstance().getDataContext()));
+
         }
         else {
             showInfoNotification("Recording stopped");
             audioInterface.stop();
+//            AnAction stopDebugAction = ActionManager.getInstance().getAction("Stop");
+//            stopDebugAction.actionPerformed(AnActionEvent.createFromDataContext("Stop", new Presentation(), DataManager.getInstance().getDataContext()));
+
         }
-
-
     }
 
     @Override
