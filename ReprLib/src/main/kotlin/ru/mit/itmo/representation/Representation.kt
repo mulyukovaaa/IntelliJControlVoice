@@ -1,23 +1,20 @@
 package ru.mit.itmo.representation.ru.mit.itmo.representation
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.JsonClass
-import com.squareup.moshi.Moshi
+import com.squareup.moshi.*
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kotlinx.serialization.Serializable
+//import kotlinx.serialization.Serializable
 import java.io.File
 
 //import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
-//@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = true)
 data class FunctionParameters(
     /**
      * Base class for representing different aliases for function
      */
     @Json(name = "aliases") val aliases: List<String>
 
-    )
+)
 
 //@JsonClass(generateAdapter = true)
 //data class FunctionRepresentation(
@@ -37,18 +34,32 @@ class Representation {
             .add(KotlinJsonAdapterFactory())
             .build()
 
-        private val jsonAdapter: JsonAdapter<Map<String, FunctionParameters>> = moshi.adapter<Map<String, FunctionParameters>>(Map::class.java)
+        val type = Types.newParameterizedType(Map::class.java, String::class.java, FunctionParameters::class.java);
+        private val jsonAdapter: JsonAdapter<Map<String, FunctionParameters>> =
+            moshi.adapter<Map<String, FunctionParameters>>(type)
+
         fun toJson(function: Map<String, FunctionParameters>, path: String) {
             val json = jsonAdapter.toJson(function)
             println(json)
             File(path).printWriter().use { out -> out.println(json) }
         }
 
-        fun fromJson(path: String) {
-            val file = File(path).useLines { it.toList() }
+        fun fromJson(path: String): Map<String, FunctionParameters> {
+            val file: List<String>
+            try {
+                file = File(path).useLines { it.toList() }
+            } catch (e: Exception) {
+                throw Exception("Error while opening file: ${e.message}")
+            }
+
             val data = file.joinToString()
             val res = jsonAdapter.fromJson(data)
-            println(res)
+
+            if (res != null) {
+                return res
+            }
+            // Add default configuration
+            throw Exception("Empty file")
         }
 
         fun invokeFunction(functionName: String) {

@@ -1,5 +1,6 @@
 package ru.mit.itmo.representation
 
+//import com.sun.tools.javac.code.TypeAnnotationPosition.instanceOf
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import ru.mit.itmo.representation.ru.mit.itmo.representation.FunctionParameters
@@ -15,6 +16,8 @@ class RepresentationTest{
         return a + 2
     }
 
+    private val path = "src\\test\\kotlin\\ru\\mit\\itmo\\representation\\test.json"
+
     private val commandsByName = listOf(::f, ::g).associateBy { it.name }
     @Test
     fun `test toJson`(){
@@ -27,13 +30,18 @@ class RepresentationTest{
             "f" to mockParameters,
             "g" to mockParameters
         )
-        Representation.toJson(mockRepresentation, "C:\\Coding\\Hack\\IntelliJControlVoice\\ReprLib\\src\\test\\kotlin\\ru\\mit\\itmo\\representation\\test.json")
+        Representation.toJson(mockRepresentation, path)
     }
 
     @Test
     fun `test fromJson`(){
-        val res = Representation.fromJson("C:\\Coding\\Hack\\IntelliJControlVoice\\ReprLib\\src\\test\\kotlin\\ru\\mit\\itmo\\representation\\test.json")
+        val res = Representation.fromJson(path)
 //        println(res)
-
+        val aliases = listOf("function1", "function2")
+        val test = res.get("f")
+        print(test)
+        assertTrue(FunctionParameters::class.isInstance(test))
+        assertEquals(FunctionParameters(aliases), res["f"])
+        assertEquals(FunctionParameters(aliases), res["g"])
     }
 }
