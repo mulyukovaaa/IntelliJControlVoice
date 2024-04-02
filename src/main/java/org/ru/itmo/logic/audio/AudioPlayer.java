@@ -1,4 +1,4 @@
-package com.devdays;
+package org.ru.itmo.logic.audio;
 
 import javax.sound.sampled.*;
 import java.io.File;
@@ -9,7 +9,7 @@ public class AudioPlayer {
 
     public void play() {
         try {
-            File audioFile = new File("recorded.wav");
+            File audioFile = new File("records\\recorded.wav");
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
             clip = AudioSystem.getClip();
             clip.open(audioStream);

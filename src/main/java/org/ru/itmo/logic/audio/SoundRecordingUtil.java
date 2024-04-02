@@ -1,17 +1,24 @@
-package com.devdays;
+package org.ru.itmo.logic.audio;
+
+import org.ru.itmo.actions.ToolbarIconAction;
 
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
+
+
 
 public class SoundRecordingUtil {
     private TargetDataLine line;
     private final AudioFormat format;
     private final File outputFile;
 
-    public SoundRecordingUtil() {
+    public Logger logger = Logger.getLogger(ToolbarIconAction.class.getName());
+    public SoundRecordingUtil(String path) {
         format = new AudioFormat(44100, 16, 2, true, false);
-        outputFile = new File("recorded.wav");
+//        outputFile = new File("records\\recorded.wav");
+        outputFile = new File(path);
     }
 
     public void start() {
@@ -32,6 +39,7 @@ public class SoundRecordingUtil {
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         }
+        logger.info("Out file: " + outputFile.getAbsolutePath());
     }
 
     public void stop() {
