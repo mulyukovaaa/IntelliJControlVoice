@@ -75,7 +75,6 @@ public class ToolbarIconAction extends AnAction {
                 message,
                 NotificationType.INFORMATION
         );
-        notification.addAction(NotificationAction.create("Actiom", );
         Notifications.Bus.notify(notification);
     }
 
