@@ -29,6 +29,14 @@ intellij {
     plugins.set(listOf(/* Plugin Dependencies */))
 }
 
+dependencies {
+    implementation("com.google.code.gson:gson:2.8.8")
+    implementation("com.alphacephei:vosk:0.3.45")
+    implementation("com.theokanning.openai-gpt3-java:service:0.14.0")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+}
+
 tasks {
     // Set the JVM compatibility versions
     withType<JavaCompile> {

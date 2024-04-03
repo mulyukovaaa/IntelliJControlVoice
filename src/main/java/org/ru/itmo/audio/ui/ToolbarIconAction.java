@@ -1,6 +1,5 @@
 package org.ru.itmo.audio.ui;
 
-
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
