@@ -17,7 +17,7 @@ import javax.swing.*;
 import java.util.logging.Logger;
 
 public class ToolbarIconAction extends AnAction {
-    public Logger logger = Logger.getLogger(ToolbarIconAction.class.getName());
+    //    public Logger logger = Logger.getLogger(ToolbarIconAction.class.getName());
     private ActionCaller actionCaller = new ActionCallerSimple();
 
     @Override
@@ -42,7 +42,7 @@ public class ToolbarIconAction extends AnAction {
         super(text, description, icon);
     }
 
-    private void showPopup(@NotNull AnActionEvent event, String title, String message){
+    private void showPopup(@NotNull AnActionEvent event, String title, String message) {
         Project currentProject = event.getProject();
         Messages.showMessageDialog(
                 currentProject,
@@ -51,7 +51,7 @@ public class ToolbarIconAction extends AnAction {
                 Messages.getInformationIcon());
     }
 
-    private void showErrorNotification(String message){
+    private void showErrorNotification(String message) {
         Notification notification = new Notification(
                 "JControl",
                 message,
@@ -61,7 +61,7 @@ public class ToolbarIconAction extends AnAction {
         Notifications.Bus.notify(notification);
     }
 
-    private void showInfoNotification(String message){
+    private void showInfoNotification(String message) {
         Notification notification = new Notification(
                 "JControl",
                 message,
@@ -72,20 +72,27 @@ public class ToolbarIconAction extends AnAction {
     }
 
     private static final AudioInterface audioInterface = new SimpleAudioInvoker();
+
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
 
-        if (!audioInterface.isRunning()){
+        if (!audioInterface.isRunning()) {
             showInfoNotification("Recording started");
             audioInterface.start();
-        }
-        else {
+        } else {
             showInfoNotification("Recording stopped");
             audioInterface.stop();
             String pathToRecord = audioInterface.getPath();
 //            showInfoNotification("<h1>Path to audio:</h1><br>" +
 //                    pathToRecord);
-            actionCaller.call(event, "Open");
+            String command = "Close"; // TODO: Add call to voice analyzer
+            boolean flag = actionCaller.call(event, command);
+            if (flag) {
+                showInfoNotification("Running " + command);
+            }
+            else {
+                showErrorNotification("Command " + command + " not found");
+            }
         }
 
     }
