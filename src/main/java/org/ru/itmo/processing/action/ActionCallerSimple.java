@@ -1,11 +1,8 @@
 package org.ru.itmo.processing.action;
 
-import com.github.weisj.jsvg.S;
-import com.intellij.icons.ExpUiIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
-import net.schmizz.sshj.transport.mac.MAC;
 import org.jetbrains.annotations.NotNull;
 import org.ru.itmo.processing.action.commands.CloseCurrentFile;
 import org.ru.itmo.processing.action.commands.OpenDebug;
@@ -13,11 +10,9 @@ import org.ru.itmo.processing.action.commands.OpenNewClass;
 import org.ru.itmo.processing.action.commands.OpenProject;
 import org.ru.itmo.processing.action.commands.OpenStructure;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class ActionCallerSimple implements ActionCaller {
     private final Map<String, Consumer<AnActionEvent>> map = new HashMap<>();

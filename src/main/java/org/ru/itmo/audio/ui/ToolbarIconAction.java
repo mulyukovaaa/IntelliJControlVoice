@@ -3,7 +3,9 @@ package org.ru.itmo.audio.ui;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +16,6 @@ import org.ru.itmo.processing.action.ActionCaller;
 import org.ru.itmo.processing.action.ActionCallerSimple;
 
 import javax.swing.*;
-import java.util.logging.Logger;
 
 public class ToolbarIconAction extends AnAction {
     //    public Logger logger = Logger.getLogger(ToolbarIconAction.class.getName());
