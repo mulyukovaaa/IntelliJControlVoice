@@ -11,12 +11,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.ru.itmo.logic.audioinvoker.AudioInterface;
 import org.ru.itmo.logic.audioinvoker.SimpleAudioInvoker;
+import org.ru.itmo.logic.caller.ActionCaller;
+import org.ru.itmo.logic.caller.ActionCallerSimple;
 
 import javax.swing.*;
 import java.util.logging.Logger;
 
 public class ToolbarIconAction extends AnAction {
     public Logger logger = Logger.getLogger(ToolbarIconAction.class.getName());
+    private ActionCaller actionCaller = new ActionCallerSimple();
 
     @Override
     public @NotNull ActionUpdateThread getActionUpdateThread() {
@@ -76,17 +79,16 @@ public class ToolbarIconAction extends AnAction {
         if (!audioInterface.isRunning()){
             showInfoNotification("Recording started");
             audioInterface.start();
-//            AnAction createProjectAction = ActionManager.getInstance().getAction("Exit");
-//            createProjectAction.actionPerformed(AnActionEvent.createFromDataContext("Exit", new Presentation(), DataManager.getInstance().getDataContext()));
-
         }
         else {
             showInfoNotification("Recording stopped");
             audioInterface.stop();
-//            AnAction stopDebugAction = ActionManager.getInstance().getAction("Stop");
-//            stopDebugAction.actionPerformed(AnActionEvent.createFromDataContext("Stop", new Presentation(), DataManager.getInstance().getDataContext()));
-
+            String pathToRecord = audioInterface.getPath();
+//            showInfoNotification("<h1>Path to audio:</h1><br>" +
+//                    pathToRecord);
+            actionCaller.call(event, "Open");
         }
+
     }
 
     @Override

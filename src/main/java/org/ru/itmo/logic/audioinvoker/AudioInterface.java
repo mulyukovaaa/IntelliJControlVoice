@@ -5,4 +5,7 @@ public interface AudioInterface {
     void stop();
 
     boolean isRunning();
+
+    String getPath();
 }
+

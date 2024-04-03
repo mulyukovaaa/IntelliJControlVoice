@@ -30,6 +30,11 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable parentId="tools" instance="org.ru.itmo.logic.settings.AppSettingsConfigurable"
+                                 id="org.intellij.sdk.settings.AppSettingsConfigurable"
+                                 displayName="JControl"/>
+        <applicationService serviceImplementation="org.ru.itmo.logic.settings.AppSettingsState"/>
+
         <notificationGroup id="JControl"
                            displayType="BALLOON"
         />
