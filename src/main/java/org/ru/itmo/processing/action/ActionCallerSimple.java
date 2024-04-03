@@ -1,5 +1,6 @@
 package org.ru.itmo.processing.action;
 
+
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
@@ -18,11 +19,12 @@ public class ActionCallerSimple implements ActionCaller {
     private final Map<String, Consumer<AnActionEvent>> map = new HashMap<>();
 
     public ActionCallerSimple() {
-        map.put("Close", ActionCallerSimple::callCloseCurrentFile);
-        map.put("Debug", ActionCallerSimple::callOpenDebug);
-        map.put("New class", ActionCallerSimple::callNewClass);
-        map.put("Structure", ActionCallerSimple::callOpenStructure);
-        map.put("Open", ActionCallerSimple::callOpenProject);
+        map.put("close", ActionCallerSimple::callCloseCurrentFile);
+        map.put("debug", ActionCallerSimple::callOpenDebug);
+        map.put("new_class", ActionCallerSimple::callNewClass);
+        map.put("structure", ActionCallerSimple::callOpenStructure);
+        map.put("open", ActionCallerSimple::callOpenProject);
+        map.put("version_control", ActionCallerSimple::callOpenProject);
     }
 
     @Override
@@ -61,6 +63,11 @@ public class ActionCallerSimple implements ActionCaller {
 
     private static void callOpenDebug(@NotNull AnActionEvent event){
         AnAction action = new OpenDebug();
+        action.actionPerformed(event);
+    }
+
+    public void callOpenVersionControl(@NotNull AnActionEvent event){
+        AnAction action = new OpenVersionControl();
         action.actionPerformed(event);
     }
 }

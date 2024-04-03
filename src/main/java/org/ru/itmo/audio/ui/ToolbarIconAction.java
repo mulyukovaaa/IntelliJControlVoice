@@ -1,6 +1,9 @@
 package org.ru.itmo.audio.ui;
 
 import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationAction;
+import com.intellij.notification.NotificationDisplayType;
+import com.intellij.notification.NotificationGroup;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
@@ -14,6 +17,7 @@ import org.ru.itmo.audio.AudioInterface;
 import org.ru.itmo.audio.SimpleAudioInvoker;
 import org.ru.itmo.processing.action.ActionCaller;
 import org.ru.itmo.processing.action.ActionCallerSimple;
+import org.ru.itmo.processing.action.commands.CloseCurrentFile;
 
 import javax.swing.*;
 
@@ -53,6 +57,7 @@ public class ToolbarIconAction extends AnAction {
     }
 
     private void showErrorNotification(String message) {
+        NotificationGroup group = new NotificationGroup("JControl", NotificationDisplayType.BALLOON, true);
         Notification notification = new Notification(
                 "JControl",
                 message,
@@ -63,12 +68,14 @@ public class ToolbarIconAction extends AnAction {
     }
 
     private void showInfoNotification(String message) {
-        Notification notification = new Notification(
+        NotificationGroup group = new NotificationGroup("JControl", NotificationDisplayType.BALLOON, true);
+        String fileUrl = "C:\\Coding\\Hack\\IntelliJControlVoice\\records\\recorded.wav";
+        Notification notification = group.createNotification(
                 "JControl",
                 message,
                 NotificationType.INFORMATION
         );
-        notification.addAction(new PopupDialogAction());
+        notification.addAction(NotificationAction.create("Actiom", );
         Notifications.Bus.notify(notification);
     }
 
@@ -77,6 +84,7 @@ public class ToolbarIconAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
 
+
         if (!audioInterface.isRunning()) {
             showInfoNotification("Recording started");
             audioInterface.start();
@@ -84,14 +92,11 @@ public class ToolbarIconAction extends AnAction {
             showInfoNotification("Recording stopped");
             audioInterface.stop();
             String pathToRecord = audioInterface.getPath();
-//            showInfoNotification("<h1>Path to audio:</h1><br>" +
-//                    pathToRecord);
             String command = "Close"; // TODO: Add call to voice analyzer
             boolean flag = actionCaller.call(event, command);
             if (flag) {
                 showInfoNotification("Running " + command);
-            }
-            else {
+            } else {
                 showErrorNotification("Command " + command + " not found");
             }
         }
