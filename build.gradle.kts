@@ -1,11 +1,13 @@
+fun properties(key: String) = providers.gradleProperty(key)
+fun environment(key: String) = providers.environmentVariable(key)
+
 plugins {
-    id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.9.21"
-    id("org.jetbrains.intellij") version "1.16.1"
+    java
+    alias(libs.plugins.gradleIntelliJPlugin) // Gradle IntelliJ Plugin
 }
 
-group = "ru.itmo.hack"
-version = "1.0.0"
+group = "ru.itmo.devdays"
+version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -14,6 +16,13 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
+    pluginName = properties("pluginName")
+    version = properties("platformVersion")
+    type = properties("platformType")
+
+    // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
+    plugins = properties("platformPlugins").map { it.split(',').map(String::trim).filter(String::isNotEmpty) }
+
     version.set("2023.3.6")
     type.set("IC") // Target IDE Platform
 
@@ -23,11 +32,14 @@ intellij {
 tasks {
     // Set the JVM compatibility versions
     withType<JavaCompile> {
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
+        options.compilerArgs.add("--enable-preview")
     }
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
+    withType<JavaExec> {
+        jvmArgs("--enable-preview")
+    }
+
+    wrapper {
+        gradleVersion = properties("gradleVersion").get()
     }
 
     patchPluginXml {
@@ -43,5 +55,11 @@ tasks {
 
     publishPlugin {
         token.set(System.getenv("PUBLISH_TOKEN"))
+    }
+
+    patchPluginXml {
+        version = properties("pluginVersion")
+        sinceBuild = properties("pluginSinceBuild")
+        untilBuild = properties("pluginUntilBuild")
     }
 }

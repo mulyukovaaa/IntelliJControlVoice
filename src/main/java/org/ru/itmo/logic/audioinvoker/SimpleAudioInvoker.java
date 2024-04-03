@@ -3,11 +3,12 @@ package org.ru.itmo.logic.audioinvoker;
 import org.ru.itmo.logic.audio.SoundRecordingUtil;
 
 public class SimpleAudioInvoker implements AudioInterface{
-    SoundRecordingUtil audioUtil;
+    private final SoundRecordingUtil audioUtil;
+    private String path = "C:\\Users\\Andrew\\Desktop\\Hack\\IntelliJControlVoice\\records\\record.wav";
     boolean running;
 
     public SimpleAudioInvoker() {
-        audioUtil = new SoundRecordingUtil("C:\\Coding\\Hack\\IntelliJControlVoice\\records\\test.wav"); // TODO: Change
+        audioUtil = new SoundRecordingUtil(path); // TODO: Change
     }
     @Override
     public void start() {
@@ -28,5 +29,10 @@ public class SimpleAudioInvoker implements AudioInterface{
     @Override
     public boolean isRunning() {
         return running;
+    }
+
+    @Override
+    public String getPath() {
+        return path;
     }
 }

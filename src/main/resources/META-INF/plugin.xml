@@ -1,7 +1,7 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
-    <id>ru.itmo.hack.jcontrolvoice</id>
+    <id>ru.itmo.devdays.jcontrolvoice</id>
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
@@ -29,11 +29,18 @@
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
-
     <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable parentId="tools" instance="org.ru.itmo.logic.settings.AppSettingsConfigurable"
+                                 id="org.intellij.sdk.settings.AppSettingsConfigurable"
+                                 displayName="JControl"/>
+        <applicationService serviceImplementation="org.ru.itmo.logic.settings.AppSettingsState"/>
+
         <notificationGroup id="JControl"
                            displayType="BALLOON"
         />
+        <projectConfigurable id="voiceCommandsConfigurable" displayName="Voice Commands"
+                             instance="ru.itmo.devdays.jcontrolvoice.configuration.VoiceCommandConfigurable"/>
+
     </extensions>
     <actions>
         <action
@@ -55,6 +62,21 @@
                     second-keystroke="G"/>
             <add-to-group group-id="MainToolbarGeneralActionsGroup" anchor="first"/>
 <!--            <add-to-group group-id="MainToolbarGeneralActionsGroup" anchor="first"/>-->
+        </action>
+        <action id="OpenTerminalAction" class="org.ru.itmo.logic.caller.OpenTerminalAction" text="Open Terminal" description="Opens the terminal window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="HideTerminalAction" class="org.ru.itmo.logic.caller.HideTerminalAction" text="Close Terminal" description="Closes the terminal window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="OpenNewClass" class="org.ru.itmo.logic.caller.OpenNewClass" text="Open New Class" description="Open create class window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="OpenNextCurrentFile" class="org.ru.itmo.logic.caller.OpenNextCurrentFile" text="Open Next Current File" description="Open next tab">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="OpenPreviousCurrentFile" class="org.ru.itmo.logic.caller.OpenPreviousCurrentFile" text="Open Previous Current File" description="Open previous tab">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
     </actions>
 </idea-plugin>
