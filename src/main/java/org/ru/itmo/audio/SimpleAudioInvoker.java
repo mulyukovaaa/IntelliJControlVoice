@@ -21,7 +21,12 @@ public class SimpleAudioInvoker implements AudioInterface{
                 throw new RuntimeException(e);
             }
         } else if (os.contains("linux") || os.contains("unix")) {
-            path = System.getProperty("java.io.tmpdir") + "JControl/recordings/";
+            path = System.getProperty("java.io.tmpdir") + "/JControl/recordings/";
+            try {
+                Files.createDirectories(Paths.get(path));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             // Mac!
             path = System.getProperty("java.io.tmpdir") + "JControl/recordings/";
