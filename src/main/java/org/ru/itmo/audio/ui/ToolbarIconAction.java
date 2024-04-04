@@ -1,7 +1,6 @@
 package org.ru.itmo.audio.ui;
 
 import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationAction;
 import com.intellij.notification.NotificationDisplayType;
 import com.intellij.notification.NotificationGroup;
 import com.intellij.notification.NotificationType;
@@ -18,12 +17,13 @@ import org.ru.itmo.audio.AudioInterface;
 import org.ru.itmo.audio.SimpleAudioInvoker;
 import org.ru.itmo.processing.action.ActionCaller;
 import org.ru.itmo.processing.action.ActionCallerSimple;
-import org.ru.itmo.processing.action.commands.CloseCurrentFile;
+import com.intellij.openapi.diagnostic.Logger;
 
 import javax.swing.*;
 
+
 public class ToolbarIconAction extends AnAction {
-    //    public Logger logger = Logger.getLogger(ToolbarIconAction.class.getName());
+        public Logger log = Logger.getInstance(ToolbarIconAction.class.getName());
     private ActionCaller actionCaller = new ActionCallerSimple();
 
     @Override
@@ -70,7 +70,6 @@ public class ToolbarIconAction extends AnAction {
 
     private void showInfoNotification(String message) {
         NotificationGroup group = new NotificationGroup("JControl", NotificationDisplayType.BALLOON, true);
-        String fileUrl = "C:\\Coding\\Hack\\IntelliJControlVoice\\records\\recorded.wav";
         Notification notification = group.createNotification(
                 "JControl",
                 message,
@@ -83,23 +82,26 @@ public class ToolbarIconAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
-
-
         if (!audioInterface.isRunning()) {
-            showInfoNotification("Recording started");
+            showInfoNotification("<h3>Recording started</h3>Press again to stop");
             audioInterface.start();
         } else {
             showInfoNotification("Recording stopped");
             audioInterface.stop();
             String pathToRecord = audioInterface.getPath();
-            String parsedCommand = VoiceMatchToCommand.math(pathToRecord);
-            System.out.println(parsedCommand);
+            String parsedCommand;
+            try{
+                parsedCommand = VoiceMatchToCommand.math(pathToRecord);
+                System.out.println(parsedCommand);
 
-            boolean flag = actionCaller.call(event, parsedCommand);
-            if (flag) {
-                showInfoNotification("Running " + parsedCommand);
-            } else {
-                showErrorNotification("Command " + parsedCommand + " not found");
+                boolean flag = actionCaller.call(event, parsedCommand);
+                if (flag) {
+                    showInfoNotification("Running " + parsedCommand);
+                } else {
+                    showErrorNotification("Command " + parsedCommand + " not found");
+                }
+            } catch (Exception e){
+                showErrorNotification("An error occurred: " + e.getMessage());
             }
         }
 

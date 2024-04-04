@@ -3,6 +3,7 @@ package org.ru.itmo.processing.action;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.diagnostic.LogLevel;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.ru.itmo.processing.action.commands.CloseCurrentFile;
@@ -13,15 +14,18 @@ import org.ru.itmo.processing.action.commands.OpenPreviousCurrentFile;
 import org.ru.itmo.processing.action.commands.OpenProject;
 import org.ru.itmo.processing.action.commands.OpenServices;
 import org.ru.itmo.processing.action.commands.OpenStructure;
+import org.ru.itmo.processing.action.commands.OpenVersionControl;
+import com.intellij.openapi.diagnostic.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
 public class ActionCallerSimple implements ActionCaller {
-    private final Map<String, Consumer<AnActionEvent>> map = new HashMap<>();
+    private static final Logger log = Logger.getInstance(ActionCallerSimple.class);
+    private static final Map<String, Consumer<AnActionEvent>> map = new HashMap<>();
 
-    public ActionCallerSimple() {
+    static  {
         map.put("close", ActionCallerSimple::callCloseCurrentFile);
         map.put("debug", ActionCallerSimple::callOpenDebug);
         map.put("new class", ActionCallerSimple::callNewClass);
@@ -38,6 +42,8 @@ public class ActionCallerSimple implements ActionCaller {
         Project project = event.getProject();
         assert project != null;
         System.out.println(project.getBasePath() + " Command:" + command);
+        log.info(project.getBasePath() + " Command: " + command);
+        log.setLevel(LogLevel.DEBUG);
 
         Consumer<AnActionEvent> action = map.get(command);
         if (action == null){
