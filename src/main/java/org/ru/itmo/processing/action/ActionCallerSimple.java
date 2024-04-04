@@ -7,6 +7,11 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import net.schmizz.sshj.transport.mac.MAC;
 import org.jetbrains.annotations.NotNull;
+import org.ru.itmo.processing.action.commands.CloseCurrentFile;
+import org.ru.itmo.processing.action.commands.OpenDebug;
+import org.ru.itmo.processing.action.commands.OpenNewClass;
+import org.ru.itmo.processing.action.commands.OpenProject;
+import org.ru.itmo.processing.action.commands.OpenStructure;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
