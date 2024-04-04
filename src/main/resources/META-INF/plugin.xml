@@ -59,7 +59,8 @@
             <keyboard-shortcut
                     keymap="$default"
                     first-keystroke="control alt G"
-                    second-keystroke="G"/>
+                    second-keystroke="G"
+            />
             <add-to-group group-id="MainToolbarGeneralActionsGroup" anchor="first"/>
 <!--            <add-to-group group-id="MainToolbarGeneralActionsGroup" anchor="first"/>-->
         </action>

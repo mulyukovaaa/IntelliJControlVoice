@@ -1,23 +1,29 @@
 package org.ru.itmo.audio.ui;
 
 import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationDisplayType;
+import com.intellij.notification.NotificationGroup;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.ru.itmo.VoiceMatchToCommand.VoiceMatchToCommand;
 import org.ru.itmo.audio.AudioInterface;
 import org.ru.itmo.audio.SimpleAudioInvoker;
 import org.ru.itmo.processing.action.ActionCaller;
 import org.ru.itmo.processing.action.ActionCallerSimple;
+import com.intellij.openapi.diagnostic.Logger;
 
 import javax.swing.*;
-import java.util.logging.Logger;
+
 
 public class ToolbarIconAction extends AnAction {
-    //    public Logger logger = Logger.getLogger(ToolbarIconAction.class.getName());
+        public Logger log = Logger.getInstance(ToolbarIconAction.class.getName());
     private ActionCaller actionCaller = new ActionCallerSimple();
 
     @Override
@@ -52,6 +58,7 @@ public class ToolbarIconAction extends AnAction {
     }
 
     private void showErrorNotification(String message) {
+        NotificationGroup group = new NotificationGroup("JControl", NotificationDisplayType.BALLOON, true);
         Notification notification = new Notification(
                 "JControl",
                 message,
@@ -62,12 +69,12 @@ public class ToolbarIconAction extends AnAction {
     }
 
     private void showInfoNotification(String message) {
-        Notification notification = new Notification(
+        NotificationGroup group = new NotificationGroup("JControl", NotificationDisplayType.BALLOON, true);
+        Notification notification = group.createNotification(
                 "JControl",
                 message,
                 NotificationType.INFORMATION
         );
-        notification.addAction(new PopupDialogAction());
         Notifications.Bus.notify(notification);
     }
 
@@ -75,23 +82,26 @@ public class ToolbarIconAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
-
         if (!audioInterface.isRunning()) {
-            showInfoNotification("Recording started");
+            showInfoNotification("<h3>Recording started</h3>Press again to stop");
             audioInterface.start();
         } else {
             showInfoNotification("Recording stopped");
             audioInterface.stop();
             String pathToRecord = audioInterface.getPath();
-//            showInfoNotification("<h1>Path to audio:</h1><br>" +
-//                    pathToRecord);
-            String command = "Close"; // TODO: Add call to voice analyzer
-            boolean flag = actionCaller.call(event, command);
-            if (flag) {
-                showInfoNotification("Running " + command);
-            }
-            else {
-                showErrorNotification("Command " + command + " not found");
+            String parsedCommand;
+            try{
+                parsedCommand = VoiceMatchToCommand.math(pathToRecord);
+                System.out.println(parsedCommand);
+
+                boolean flag = actionCaller.call(event, parsedCommand);
+                if (flag) {
+                    showInfoNotification("Running " + parsedCommand);
+                } else {
+                    showErrorNotification("Command " + parsedCommand + " not found");
+                }
+            } catch (Exception e){
+                showErrorNotification("An error occurred: " + e.getMessage());
             }
         }
 

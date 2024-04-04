@@ -1,33 +1,40 @@
 package org.ru.itmo.processing.action;
 
-import com.github.weisj.jsvg.S;
-import com.intellij.icons.ExpUiIcons;
+
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.diagnostic.LogLevel;
 import com.intellij.openapi.project.Project;
-import net.schmizz.sshj.transport.mac.MAC;
 import org.jetbrains.annotations.NotNull;
 import org.ru.itmo.processing.action.commands.CloseCurrentFile;
 import org.ru.itmo.processing.action.commands.OpenDebug;
 import org.ru.itmo.processing.action.commands.OpenNewClass;
+import org.ru.itmo.processing.action.commands.OpenNextCurrentFile;
+import org.ru.itmo.processing.action.commands.OpenPreviousCurrentFile;
 import org.ru.itmo.processing.action.commands.OpenProject;
+import org.ru.itmo.processing.action.commands.OpenServices;
 import org.ru.itmo.processing.action.commands.OpenStructure;
+import org.ru.itmo.processing.action.commands.OpenVersionControl;
+import com.intellij.openapi.diagnostic.Logger;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class ActionCallerSimple implements ActionCaller {
-    private final Map<String, Consumer<AnActionEvent>> map = new HashMap<>();
+    private static final Logger log = Logger.getInstance(ActionCallerSimple.class);
+    private static final Map<String, Consumer<AnActionEvent>> map = new HashMap<>();
 
-    public ActionCallerSimple() {
-        map.put("Close", ActionCallerSimple::callCloseCurrentFile);
-        map.put("Debug", ActionCallerSimple::callOpenDebug);
-        map.put("New class", ActionCallerSimple::callNewClass);
-        map.put("Structure", ActionCallerSimple::callOpenStructure);
-        map.put("Open", ActionCallerSimple::callOpenProject);
+    static  {
+        map.put("close", ActionCallerSimple::callCloseCurrentFile);
+        map.put("debug", ActionCallerSimple::callOpenDebug);
+        map.put("new class", ActionCallerSimple::callNewClass);
+        map.put("structure", ActionCallerSimple::callOpenStructure);
+        map.put("open", ActionCallerSimple::callOpenProject);
+        map.put("version control", ActionCallerSimple::callOpenVersionControl);
+        map.put("services", ActionCallerSimple::callOpenServices);
+        map.put("next", ActionCallerSimple::callNextFile);
+        map.put("previous", ActionCallerSimple::callPreviousFile);
     }
 
     @Override
@@ -35,6 +42,8 @@ public class ActionCallerSimple implements ActionCaller {
         Project project = event.getProject();
         assert project != null;
         System.out.println(project.getBasePath() + " Command:" + command);
+        log.info(project.getBasePath() + " Command: " + command);
+        log.setLevel(LogLevel.DEBUG);
 
         Consumer<AnActionEvent> action = map.get(command);
         if (action == null){
@@ -66,6 +75,26 @@ public class ActionCallerSimple implements ActionCaller {
 
     private static void callOpenDebug(@NotNull AnActionEvent event){
         AnAction action = new OpenDebug();
+        action.actionPerformed(event);
+    }
+
+    public static void callOpenVersionControl(@NotNull AnActionEvent event){
+        AnAction action = new OpenVersionControl();
+        action.actionPerformed(event);
+    }
+
+    public static void callOpenServices(@NotNull AnActionEvent event){
+        AnAction action = new OpenServices();
+        action.actionPerformed(event);
+    }
+
+    public static void callNextFile(@NotNull AnActionEvent event){
+        AnAction action = new OpenNextCurrentFile();
+        action.actionPerformed(event);
+    }
+
+    public static void callPreviousFile(@NotNull AnActionEvent event){
+        AnAction action = new OpenPreviousCurrentFile();
         action.actionPerformed(event);
     }
 }
