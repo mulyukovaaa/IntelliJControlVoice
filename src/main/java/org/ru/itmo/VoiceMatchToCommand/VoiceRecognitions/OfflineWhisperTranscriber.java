@@ -28,7 +28,7 @@ public class OfflineWhisperTranscriber implements Transcriber {
             baos.write(Files.readAllBytes(path));
             baos.write(("\r\n--" + boundary + "--\r\n").getBytes());
 
-            if (1 == 2) { //toDO: change
+            if (1 == 1) { //toDO: change
                 String language = "en";
                 baos.write(("Content-Disposition: form-data; name=\"language\"\r\n\r\n").getBytes());
                 baos.write(language.getBytes());

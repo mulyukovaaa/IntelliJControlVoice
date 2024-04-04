@@ -18,7 +18,7 @@ def transcribe_audio():
     file = request.files['file']
     language = None
 
-    if 'language' not in request.files:
+    if 'language' in request.files:
         language = request.files['language']
 
     if file.filename == '':
