@@ -161,5 +161,11 @@
         </action>
         <!--RunMenu-->
 
+        <!--EditorPopupMenu-->
+        <action id="MoveCursorToLineAction" class="org.ru.itmo.processing.action.commands.MoveCursorToLineAction" text="Move Cursor To Line" description="Move cursor to line">
+            <add-to-group group-id="RunMenu" anchor="last"/>
+        </action>
+        <!--EditorPopupMenu-->
+
     </actions>
 </idea-plugin>
