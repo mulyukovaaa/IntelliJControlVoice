@@ -13,6 +13,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.ru.itmo.VoiceMatchToCommand.VoiceMatchToCommand;
 import org.ru.itmo.audio.AudioInterface;
 import org.ru.itmo.audio.SimpleAudioInvoker;
 import org.ru.itmo.processing.action.ActionCaller;
@@ -91,12 +92,14 @@ public class ToolbarIconAction extends AnAction {
             showInfoNotification("Recording stopped");
             audioInterface.stop();
             String pathToRecord = audioInterface.getPath();
-            String command = "Close"; // TODO: Add call to voice analyzer
-            boolean flag = actionCaller.call(event, command);
+            String parsedCommand = VoiceMatchToCommand.math(pathToRecord);
+            System.out.println(parsedCommand);
+
+            boolean flag = actionCaller.call(event, parsedCommand);
             if (flag) {
-                showInfoNotification("Running " + command);
+                showInfoNotification("Running " + parsedCommand);
             } else {
-                showErrorNotification("Command " + command + " not found");
+                showErrorNotification("Command " + parsedCommand + " not found");
             }
         }
 

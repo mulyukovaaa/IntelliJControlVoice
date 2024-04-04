@@ -8,7 +8,10 @@ import org.jetbrains.annotations.NotNull;
 import org.ru.itmo.processing.action.commands.CloseCurrentFile;
 import org.ru.itmo.processing.action.commands.OpenDebug;
 import org.ru.itmo.processing.action.commands.OpenNewClass;
+import org.ru.itmo.processing.action.commands.OpenNextCurrentFile;
+import org.ru.itmo.processing.action.commands.OpenPreviousCurrentFile;
 import org.ru.itmo.processing.action.commands.OpenProject;
+import org.ru.itmo.processing.action.commands.OpenServices;
 import org.ru.itmo.processing.action.commands.OpenStructure;
 
 import java.util.HashMap;
@@ -21,10 +24,13 @@ public class ActionCallerSimple implements ActionCaller {
     public ActionCallerSimple() {
         map.put("close", ActionCallerSimple::callCloseCurrentFile);
         map.put("debug", ActionCallerSimple::callOpenDebug);
-        map.put("new_class", ActionCallerSimple::callNewClass);
+        map.put("new class", ActionCallerSimple::callNewClass);
         map.put("structure", ActionCallerSimple::callOpenStructure);
         map.put("open", ActionCallerSimple::callOpenProject);
-        map.put("version_control", ActionCallerSimple::callOpenProject);
+        map.put("version control", ActionCallerSimple::callOpenVersionControl);
+        map.put("services", ActionCallerSimple::callOpenServices);
+        map.put("next", ActionCallerSimple::callNextFile);
+        map.put("previous", ActionCallerSimple::callPreviousFile);
     }
 
     @Override
@@ -66,8 +72,23 @@ public class ActionCallerSimple implements ActionCaller {
         action.actionPerformed(event);
     }
 
-    public void callOpenVersionControl(@NotNull AnActionEvent event){
+    public static void callOpenVersionControl(@NotNull AnActionEvent event){
         AnAction action = new OpenVersionControl();
+        action.actionPerformed(event);
+    }
+
+    public static void callOpenServices(@NotNull AnActionEvent event){
+        AnAction action = new OpenServices();
+        action.actionPerformed(event);
+    }
+
+    public static void callNextFile(@NotNull AnActionEvent event){
+        AnAction action = new OpenNextCurrentFile();
+        action.actionPerformed(event);
+    }
+
+    public static void callPreviousFile(@NotNull AnActionEvent event){
+        AnAction action = new OpenPreviousCurrentFile();
         action.actionPerformed(event);
     }
 }

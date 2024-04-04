@@ -4,7 +4,7 @@ import org.ru.itmo.audio.record.SoundRecordingUtil;
 
 public class SimpleAudioInvoker implements AudioInterface{
     private final SoundRecordingUtil audioUtil;
-    private String path = "C:\\Users\\Andrew\\Desktop\\Hack\\IntelliJControlVoice\\records\\record.wav";
+    private String path = "C:\\Coding\\Hack\\IntelliJControlVoice\\records\\recorded.wav";
     boolean running;
 
     public SimpleAudioInvoker() {
