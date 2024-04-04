@@ -5,12 +5,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
-public class OpenAITranscriber {
+public class OpenAITranscriber implements Transcriber {
 
     private final OkHttpClient client = new OkHttpClient();
     private final String apiURL = "https://api.openai.com/v1/audio/transcriptions";
     private final String apiKey = System.getenv("OPENAI_API_KEY");
 
+    @Override
     public CompletableFuture<String> transcribeAudio(String filePath) {
         File file = new File(filePath);
 
