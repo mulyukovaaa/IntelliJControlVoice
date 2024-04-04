@@ -4,7 +4,7 @@ import os
 import logging
 
 app = Flask(__name__)
-model = whisper.load_model("base")
+model = whisper.load_model("small")
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -16,6 +16,11 @@ def transcribe_audio():
         return jsonify({"error": "no file provided"}), 400
 
     file = request.files['file']
+    language = None
+
+    if 'language' not in request.files:
+        language = request.files['language']
+
     if file.filename == '':
         return jsonify({"error": "no file selected"}), 400
 
@@ -23,7 +28,14 @@ def transcribe_audio():
         filepath = os.path.join("/tmp", file.filename)
         file.save(filepath)
         
-        result = model.transcribe(filepath)
+        result = model.transcribe(
+            filepath,
+            initial_prompt='You recognize commands for working with the IDE. \
+                            Try to determine the correct language. \
+                            There may be several languages in the request.',
+            temperature=0.3,
+            language=language
+        )
         
         os.remove(filepath)
 

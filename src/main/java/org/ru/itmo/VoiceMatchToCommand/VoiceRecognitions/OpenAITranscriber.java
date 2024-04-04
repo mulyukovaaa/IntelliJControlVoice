@@ -27,6 +27,7 @@ public class OpenAITranscriber implements Transcriber {
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("file", file.getName(), fileBody)
                 .addFormDataPart("model", "whisper-1")
+                .addFormDataPart("language", "en") // toDO: change
                 .build();
 
         Request request = new Request.Builder()
