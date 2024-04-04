@@ -1,4 +1,4 @@
-package org.ru.itmo.VoiceMatchToCommand.VoiceRecognitions;
+package org.ru.itmo.processing.recognition.VoiceRecognitions;
 
 import okhttp3.*;
 import java.io.File;
@@ -15,6 +15,7 @@ public class OpenAITranscriber implements Transcriber {
         .build();
 
     private final String apiURL = "https://api.openai.com/v1/audio/transcriptions";
+    //TODO: Add your OpenAI API key here
     private final String apiKey = System.getenv("OPENAI_API_KEY");
 
     @Override

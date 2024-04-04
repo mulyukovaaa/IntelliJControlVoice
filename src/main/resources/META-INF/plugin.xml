@@ -30,16 +30,16 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <applicationConfigurable parentId="tools" instance="org.ru.itmo.processing.settings.AppSettingsConfigurable"
+        <applicationConfigurable parentId="tools" instance="org.ru.itmo.processing.settings.VoiceCommandConfigurable"
                                  id="org.intellij.sdk.settings.AppSettingsConfigurable"
-                                 displayName="JControl"/>
+                                 displayName="JControl Voice Commands"/>
         <applicationService serviceImplementation="org.ru.itmo.processing.settings.AppSettingsState"/>
 
         <notificationGroup id="JControl"
                            displayType="BALLOON"
         />
-        <projectConfigurable id="voiceCommandsConfigurable" displayName="Voice Commands"
-                             instance="org.ru.itmo.processing.settings.VoiceCommandConfigurable"/>
+<!--        <projectConfigurable id="voiceCommandsConfigurable" displayName="Voice Commands"-->
+<!--                             instance="org.ru.itmo.processing.settings.VoiceCommandConfigurable"/>-->
 
     </extensions>
     <actions>

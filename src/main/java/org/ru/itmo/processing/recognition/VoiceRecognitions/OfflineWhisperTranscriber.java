@@ -1,4 +1,4 @@
-package org.ru.itmo.VoiceMatchToCommand.VoiceRecognitions;
+package org.ru.itmo.processing.recognition.VoiceRecognitions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -1,16 +1,15 @@
-package org.ru.itmo.VoiceMatchToCommand;
+package org.ru.itmo.processing.recognition;
 
 import java.util.concurrent.CompletableFuture;
 
-import org.ru.itmo.VoiceMatchToCommand.ParserCommand.SimpleParseCommand;
-import org.ru.itmo.VoiceMatchToCommand.VoiceRecognitions.Transcriber;
-import org.ru.itmo.VoiceMatchToCommand.VoiceRecognitions.OfflineWhisperTranscriber;
+import org.ru.itmo.processing.recognition.ParserCommand.SimpleParseCommand;
+import org.ru.itmo.processing.recognition.VoiceRecognitions.Transcriber;
+import org.ru.itmo.processing.recognition.VoiceRecognitions.OfflineWhisperTranscriber;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class VoiceMatchToCommand {
-
     public static String math(String path) {
         String transcription = loadTranscription(path);
         return SimpleParseCommand.parse(transcription);

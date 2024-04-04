@@ -8,6 +8,10 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Supports storing the application settings in a persistent way.
  * The {@link State} and {@link Storage} annotations define the name of the data and the file name where
@@ -18,17 +22,16 @@ import org.jetbrains.annotations.Nullable;
         storages = @Storage("SdkSettingsPlugin.xml")
 )
 final class AppSettingsState implements PersistentStateComponent<AppSettingsState> {
-
-    public String userId = "Write something";
-    public boolean ideaStatus = false;
+    public String openAiKey = "enter openai key";
+    public String proxyAddress = "enter proxy address";
+    public List<Map<String, String>> commandList = new ArrayList<>();
 
     static AppSettingsState getInstance() {
         return ApplicationManager.getApplication().getService(AppSettingsState.class);
     }
 
-    @Nullable
     @Override
-    public AppSettingsState getState() {
+    public @Nullable AppSettingsState getState() {
         return this;
     }
 
@@ -37,4 +40,13 @@ final class AppSettingsState implements PersistentStateComponent<AppSettingsStat
         XmlSerializerUtil.copyBean(state, this);
     }
 
+    @Override
+    public void noStateLoaded() {
+        PersistentStateComponent.super.noStateLoaded();
+    }
+
+    @Override
+    public void initializeComponent() {
+        PersistentStateComponent.super.initializeComponent();
+    }
 }
