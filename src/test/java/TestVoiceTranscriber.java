@@ -1,8 +1,10 @@
+import static org.junit.Assert.assertEquals;
+
 import org.ru.itmo.VoiceMatchToCommand.VoiceMatchToCommand;
 
-public class Test {
+public class TestVoiceTranscriber {
     public static void main(String[] args) {
         String filePath = "./src/test/resources/record_out.wav";
-        System.out.println(VoiceMatchToCommand.math(filePath));
+        assertEquals("открыть файл", VoiceMatchToCommand.math(filePath));
     }
 }

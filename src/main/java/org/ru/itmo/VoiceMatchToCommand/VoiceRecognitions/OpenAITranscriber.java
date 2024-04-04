@@ -4,10 +4,16 @@ import okhttp3.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class OpenAITranscriber implements Transcriber {
 
-    private final OkHttpClient client = new OkHttpClient();
+    private final OkHttpClient client = new OkHttpClient.Builder()
+        .readTimeout(60, TimeUnit.SECONDS)
+        .writeTimeout(60, TimeUnit.SECONDS)
+        .connectTimeout(60, TimeUnit.SECONDS)
+        .build();
+
     private final String apiURL = "https://api.openai.com/v1/audio/transcriptions";
     private final String apiKey = System.getenv("OPENAI_API_KEY");
 
