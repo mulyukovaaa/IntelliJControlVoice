@@ -1,5 +1,7 @@
 package org.ru.itmo.processing.recognition.VoiceRecognitions;
 
+import org.ru.itmo.processing.settings.AppSettingsState;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
@@ -9,10 +11,12 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public class OfflineWhisperTranscriber implements Transcriber {
-    final String url = "http://localhost:5001/transcribe";
+    private final String url = "http://localhost:5001/transcribe";
+    private AppSettingsState settings = AppSettingsState.getInstance();
 
     @Override
     public CompletableFuture<String> transcribeAudio(String filePath) {
@@ -28,8 +32,9 @@ public class OfflineWhisperTranscriber implements Transcriber {
             baos.write(Files.readAllBytes(path));
             baos.write(("\r\n--" + boundary + "--\r\n").getBytes());
 
-            if (1 == 1) { //toDO: change
-                String language = "en";
+            if (Objects.nonNull(settings.language.getLanguage())) {
+
+                String language = settings.language.getLanguage();
                 baos.write(("Content-Disposition: form-data; name=\"language\"\r\n\r\n").getBytes());
                 baos.write(language.getBytes());
                 baos.write(("\r\n--" + boundary + "--\r\n").getBytes());

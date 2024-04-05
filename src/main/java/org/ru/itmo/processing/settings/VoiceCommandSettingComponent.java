@@ -1,9 +1,10 @@
 package org.ru.itmo.processing.settings;
 
-import com.intellij.ui.components.JBList;
+import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.ui.table.JBTable;
 import org.jetbrains.annotations.NotNull;
+import org.ru.itmo.processing.action.ActionCallerSimple;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -20,20 +21,43 @@ public class VoiceCommandSettingComponent {
     private JTextField proxyField = new JBTextField(15);
     private JTable commandTable = new JBTable();
     private JButton addButton = new JButton("Add Command");
-    private JList commandList = new JBList();
+    private JComboBox<TranscriberType> transcriberType = new ComboBox<>(TranscriberType.values());
+    private JComboBox<Languages> language = new ComboBox<>(Languages.values());
 
     private JPanel networkSettingsPanel;
     private JPanel shortcutsListPanel;
 
     public VoiceCommandSettingComponent() {
+        transcriberType.setSelectedIndex(0);
+
         setupTable();
-        keyField.setFont( getFont(MAIN_TEXT));
-        proxyField.setFont( getFont(MAIN_TEXT));
-        commandTable.setFont( getFont(MAIN_TEXT));
+
+        keyField.setFont(getFont(MAIN_TEXT));
+        proxyField.setFont(getFont(MAIN_TEXT));
+        commandTable.setFont(getFont(MAIN_TEXT));
         addButton.setFont(getFont(TITLE_TEXT));
 
-        networkSettingsPanel = new JPanel(new GridLayout(2, 2));
-        networkSettingsPanel.setBorder(buildTitle("Network Settings"));
+        networkSettingsPanel = new JPanel(new GridLayout(4, 2));
+        networkSettingsPanel.setBorder(buildTitle("Transcribing Settings"));
+
+        initTranscribingSettings();
+
+        shortcutsListPanel = new JPanel(new BorderLayout());
+        shortcutsListPanel.setBorder(buildTitle("Shortcuts List"));
+
+        shortcutsListPanel.add(new JScrollPane(commandTable), BorderLayout.CENTER);
+        shortcutsListPanel.add(addButton, BorderLayout.SOUTH);
+
+        settingsPanel = new JPanel(new BorderLayout());
+        settingsPanel.add(networkSettingsPanel, BorderLayout.NORTH);
+        settingsPanel.add(shortcutsListPanel, BorderLayout.CENTER);
+    }
+
+    private void initTranscribingSettings() {
+        JLabel type = new JLabel("Transcriber type: ");
+        type.setFont(getFont(MAIN_TEXT));
+        networkSettingsPanel.add(type);
+        networkSettingsPanel.add(transcriberType);
 
         JLabel key = new JLabel("OpenAI key: ");
         key.setFont(getFont(MAIN_TEXT));
@@ -45,15 +69,10 @@ public class VoiceCommandSettingComponent {
         networkSettingsPanel.add(proxi);
         networkSettingsPanel.add(proxyField);
 
-        shortcutsListPanel = new JPanel(new BorderLayout());
-        shortcutsListPanel.setBorder(buildTitle("Shortcuts List"));
-
-        shortcutsListPanel.add(new JScrollPane(commandTable), BorderLayout.CENTER);
-        shortcutsListPanel.add(addButton, BorderLayout.SOUTH);
-
-        settingsPanel = new JPanel(new BorderLayout());
-        settingsPanel.add(networkSettingsPanel, BorderLayout.NORTH);
-        settingsPanel.add(shortcutsListPanel, BorderLayout.CENTER);
+        JLabel lang = new JLabel("Command main language: ");
+        lang.setFont(getFont(MAIN_TEXT));
+        networkSettingsPanel.add(lang);
+        networkSettingsPanel.add(language);
     }
 
     @NotNull
@@ -72,23 +91,18 @@ public class VoiceCommandSettingComponent {
     private void setupTable() {
         String[] columnNames = {"Name of the command", "Record command", "Action"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+
         commandTable.setModel(model);
+        commandTable.setFont(getFont(MAIN_TEXT));
+        commandTable.setRowHeight(30);
 
-        // TODO: Add a JComboBox to the "Action" column
-        String[] actions = {"open", "close", /* add other actions here */};
-        JComboBox<String> actionComboBox = new JComboBox<>(actions);
+        JComboBox<String> actionComboBox = new ComboBox<>(ActionCallerSimple.getCommands());
 
-        // Set the JComboBox as the cell editor for the "Action" column
         commandTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(actionComboBox));
 
-        // Add an empty row to the table
         model.addRow(new Object[]{"", "", ""});
 
-        // Set up event handlers
-        addButton.addActionListener(e -> {
-            // Add a new row to the table when the add button is clicked
-            model.addRow(new Object[]{"", "", ""});
-        });
+        addButton.addActionListener(e -> model.addRow(new Object[]{"", "", ""}));
     }
 
     public JPanel getPanel() {
@@ -111,12 +125,23 @@ public class VoiceCommandSettingComponent {
         return commandTable;
     }
 
-    // Update methods
     public void setKey(String key) {
         keyField.setText(key);
     }
 
     public void setProxy(String proxy) {
         proxyField.setText(proxy);
+    }
+
+    public JComboBox<TranscriberType> getTranscriberType() {
+        return transcriberType;
+    }
+
+    public void setTranscriberType(JComboBox<TranscriberType> transcriberType) {
+        this.transcriberType = transcriberType;
+    }
+
+    public JComboBox<Languages> getLanguage() {
+        return language;
     }
 }
