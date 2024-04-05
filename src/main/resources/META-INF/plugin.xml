@@ -1,0 +1,172 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>ru.itmo.devdays.jcontrolvoice</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>JControlVoice</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="dev.days.participant56@itmo.ru" url="https://mse.itmo.ru/">MSE ITMO</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (stt formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description><![CDATA[
+        <h1>JControl plugin</h1>
+    <p>Plugin to control basic functionality </p>
+    <ol>
+        <li>Click on the icon</li>
+        <li>Say command</li>
+        <li>Enjoy</li>
+    </ol>
+  ]]></description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable parentId="tools" instance="org.ru.itmo.processing.settings.VoiceCommandConfigurable"
+                                 id="org.intellij.sdk.settings.AppSettingsConfigurable"
+                                 displayName="JControl Voice Commands"/>
+        <applicationService serviceImplementation="org.ru.itmo.processing.settings.AppSettingsState"/>
+
+        <notificationGroup id="JControl"
+                           displayType="BALLOON"
+        />
+<!--        <projectConfigurable id="voiceCommandsConfigurable" displayName="Voice Commands"-->
+<!--                             instance="org.ru.itmo.processing.settings.VoiceCommandConfigurable"/>-->
+
+    </extensions>
+    <actions>
+        <action
+                id="org.ru.itmo.audio.ui.PopupDialogAction"
+                class="org.ru.itmo.audio.ui.PopupDialogAction"
+                icon="AllIcons.CodeWithMe.CwmMicOn"
+                text="Popup Dialog Action"
+                description="SDK action example">
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+        </action>
+        <action id="org.ru.itmo.audio.ui.ToolbarIconAction"
+                class="org.ru.itmo.audio.ui.ToolbarIconAction"
+                text="Voice"
+                icon="AllIcons.CodeWithMe.CwmMicOn"
+                description="Test desctioption">
+            <keyboard-shortcut
+                    keymap="$default"
+                    first-keystroke="control alt G"
+                    second-keystroke="G"
+            />
+            <add-to-group group-id="MainToolbarGeneralActionsGroup" anchor="first"/>
+<!--            <add-to-group group-id="MainToolbarGeneralActionsGroup" anchor="first"/>-->
+        </action>
+
+        <!--ToolsMenu-->
+        <action id="OpenTerminalAction" class="org.ru.itmo.processing.action.commands.OpenTerminalAction" text="Open Terminal" description="Opens the terminal window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="OpenDebug" class="org.ru.itmo.processing.action.commands.OpenDebug" text="Open Debug" description="Opens the Debug window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="OpenRun" class="org.ru.itmo.processing.action.commands.OpenRun" text="Open Run" description="Opens the Run window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="OpenServices" class="org.ru.itmo.processing.action.commands.OpenServices" text="Open Services" description="Opens the Services window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="OpenStructure" class="org.ru.itmo.processing.action.commands.OpenStructure" text="Open Structure" description="Opens the Structure window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="OpenProject" class="org.ru.itmo.processing.action.commands.OpenProject" text="Open Project" description="Opens the Project window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="OpenMergeRequests" class="org.ru.itmo.processing.action.commands.OpenMergeRequests" text="Open Merge Requests" description="Opens the Merge Requests window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="OpenPullRequests" class="org.ru.itmo.processing.action.commands.OpenPullRequests" text="Open Pull Requests" description="Opens the Pull Requests window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="OpenVersionControl" class="org.ru.itmo.processing.action.commands.OpenVersionControl" text="Open Version Control" description="Opens the Version Control window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+
+        <action id="HideTerminalAction" class="org.ru.itmo.processing.action.commands.HideTerminalAction" text="Close Terminal" description="Closes the terminal window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="HideDebug" class="org.ru.itmo.processing.action.commands.HideDebug" text="Hide Debug" description="Closes the debug window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="HideMergeRequests" class="org.ru.itmo.processing.action.commands.HideMergeRequests" text="Hide Merge Requests" description="Closes the Merge Requests window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="HideProject" class="org.ru.itmo.processing.action.commands.HideProject" text="Hide Project" description="Closes the project window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="HidePullRequests" class="org.ru.itmo.processing.action.commands.HidePullRequests" text="Hide Pull Requests" description="Closes the Pull Requests window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="HideRun" class="org.ru.itmo.processing.action.commands.HideRun" text="Hide Run" description="Closes the run window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="HideServices" class="org.ru.itmo.processing.action.commands.HideServices" text="Hide Services" description="Closes the services window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="HideStructure" class="org.ru.itmo.processing.action.commands.HideStructure" text="Hide Structure" description="Closes the structure window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <action id="HideVersionControl" class="org.ru.itmo.processing.action.commands.HideVersionControl" text="Hide Version Control" description="Closes the Version Control window">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+        <!--ToolsMenu-->
+
+        <!--MainMenu-->
+        <action id="OpenNewClass" class="org.ru.itmo.processing.action.commands.OpenNewClass" text="Open New Class" description="Create new class">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+        </action>
+        <action id="OpenNewModule" class="org.ru.itmo.processing.action.commands.OpenNewModule" text="Open New Module" description="Create new module">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+        </action>
+        <action id="OpenNewProject" class="org.ru.itmo.processing.action.commands.OpenNewProject" text="Open New Project" description="Create new project">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+        </action>
+        <action id="Exit" class="org.ru.itmo.processing.action.commands.Exit" text="ExitIDEA" description="Exit from IntelliJ IDEA">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+        </action>
+        <!--MainMenu-->
+
+        <!--GoToMenu-->
+        <action id="OpenNextCurrentFile" class="org.ru.itmo.processing.action.commands.OpenNextCurrentFile" text="Open Next Current File" description="Open next tab">
+            <add-to-group group-id="GoToMenu" anchor="last"/>
+        </action>
+        <action id="OpenPreviousCurrentFile" class="org.ru.itmo.processing.action.commands.OpenPreviousCurrentFile" text="Open Previous Current File" description="Open previous tab">
+            <add-to-group group-id="GoToMenu" anchor="last"/>
+        </action>
+        <action id="CloseAllExceptCurrentFile" class="org.ru.itmo.processing.action.commands.CloseAllExceptCurrentFile" text="Close All Except Current File" description="Close all except current file">
+            <add-to-group group-id="GoToMenu" anchor="last"/>
+        </action>
+        <!--GoToMenu-->
+
+        <!--RunMenu-->
+        <action id="StartDebugProcess" class="org.ru.itmo.processing.action.commands.StartDebugProcess" text="Start Debug Process" description="Start Debug process">
+            <add-to-group group-id="RunMenu" anchor="last"/>
+        </action>
+        <action id="StartRunProcess" class="org.ru.itmo.processing.action.commands.StartRunProcess" text="Start Run Process" description="Start Run process">
+            <add-to-group group-id="RunMenu" anchor="last"/>
+        </action>
+        <action id="StopProcess" class="org.ru.itmo.processing.action.commands.StopProcess" text="Stop Process" description="Stop all processes">
+            <add-to-group group-id="RunMenu" anchor="last"/>
+        </action>
+        <!--RunMenu-->
+
+        <!--EditorPopupMenu-->
+        <action id="MoveCursorToLineAction" class="org.ru.itmo.processing.action.commands.MoveCursorToLineAction" text="Move Cursor To Line" description="Move cursor to line">
+            <add-to-group group-id="RunMenu" anchor="last"/>
+        </action>
+        <!--EditorPopupMenu-->
+
+    </actions>
+</idea-plugin>

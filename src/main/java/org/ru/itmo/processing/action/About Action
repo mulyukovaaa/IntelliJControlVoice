@@ -1,0 +1,33 @@
+1) Точно так же ToolWindows можно будет размножить окна:
+    * Project +
+    * Run (если запускали) +
+    * Version Control +
+    * Debug (если запускали) +
+    * Services +
+    * Structure +
+    * Merge Requests +
+    * Pull Requests +
+    * Короче, все, что tool window для быстрого чего-нить
+
+2) Команды из главного меню
+    * Создание нового проекта +
+        На счет открытия файла, у меня не получилось сразу задать имя для него
+        Надо будет подумать, но вот код :)
+
+        Запихнем в методы ActionCaller
+        AnAction createProjectAction = ActionManager.getInstance().getAction("NewProject");
+        createProjectAction.actionPerformed(AnActionEvent.createFromDataContext("NewProject", new Presentation(), DataManager.getInstance().getDataContext()));
+
+    * Создание нового класса/модуля +
+
+        AnAction createProjectAction = ActionManager.getInstance().getAction("NewClass");
+        createProjectAction.actionPerformed(AnActionEvent.createFromDataContext("NewClass", new Presentation(), DataManager.getInstance().getDataContext()));
+
+    * Закрыть текущий файл: поменять на CloseContent +
+    * Запуск дебагера: Debug +
+    * Запуск проекта: Run +
+    * Остановка дебагера, запуска Run: Stop +
+    * Выход: Exit +
+
+
+
