@@ -1,4 +1,4 @@
-package org.ru.itmo.VoiceMatchToCommand.ParserCommand;
+package org.ru.itmo.processing.recognition.ParserCommand;
 
 public class SimpleParseCommand {
 

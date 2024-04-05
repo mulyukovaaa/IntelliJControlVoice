@@ -1,21 +1,33 @@
-package org.ru.itmo.VoiceMatchToCommand.VoiceRecognitions;
+package org.ru.itmo.processing.recognition.VoiceRecognitions;
 
-import okhttp3.*;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import org.ru.itmo.processing.settings.AppSettingsState;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class OpenAITranscriber implements Transcriber {
-
     private final OkHttpClient client = new OkHttpClient.Builder()
         .readTimeout(60, TimeUnit.SECONDS)
         .writeTimeout(60, TimeUnit.SECONDS)
         .connectTimeout(60, TimeUnit.SECONDS)
         .build();
+    private AppSettingsState settings = AppSettingsState.getInstance();
 
     private final String apiURL = "https://api.openai.com/v1/audio/transcriptions";
-    private final String apiKey = System.getenv("OPENAI_API_KEY");
+    private String apiKey =settings.getState().openAiKey;
+
 
     @Override
     public CompletableFuture<String> transcribeAudio(String filePath) {
@@ -23,17 +35,18 @@ public class OpenAITranscriber implements Transcriber {
 
         RequestBody fileBody = RequestBody.create(file, MediaType.parse("audio/mp3"));
 
-        RequestBody requestBody = new MultipartBody.Builder()
+        MultipartBody.Builder requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("file", file.getName(), fileBody)
-                .addFormDataPart("model", "whisper-1")
-                .addFormDataPart("language", "en") // toDO: change
-                .build();
+                .addFormDataPart("model", "whisper-1");
+        if (Objects.nonNull(settings.language.getLanguage())) {
+            requestBody.addFormDataPart("language", settings.language.getLanguage());
+        }
 
         Request request = new Request.Builder()
                 .url(apiURL)
                 .addHeader("Authorization", "Bearer " + apiKey)
-                .post(requestBody)
+                .post(requestBody.build())
                 .build();
 
         CompletableFuture<String> future = new CompletableFuture<>();

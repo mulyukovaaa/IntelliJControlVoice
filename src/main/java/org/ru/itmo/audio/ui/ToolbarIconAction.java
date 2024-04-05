@@ -12,12 +12,14 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.ru.itmo.VoiceMatchToCommand.VoiceMatchToCommand;
 import org.ru.itmo.audio.AudioInterface;
 import org.ru.itmo.audio.SimpleAudioInvoker;
 import org.ru.itmo.processing.action.ActionCaller;
 import org.ru.itmo.processing.action.ActionCallerSimple;
 import com.intellij.openapi.diagnostic.Logger;
+import org.ru.itmo.processing.recognition.VoiceMatchToCommand;
+import org.ru.itmo.processing.settings.AppSettingsState;
+import org.ru.itmo.processing.settings.CommandEntity;
 
 import javax.swing.*;
 
@@ -91,10 +93,18 @@ public class ToolbarIconAction extends AnAction {
             String pathToRecord = audioInterface.getPath();
             String parsedCommand;
             try{
-                parsedCommand = VoiceMatchToCommand.math(pathToRecord);
-                System.out.println(parsedCommand);
+                parsedCommand = VoiceMatchToCommand.match(pathToRecord);
+                log.info(parsedCommand);
 
-                boolean flag = actionCaller.call(event, parsedCommand);
+                AppSettingsState settings = AppSettingsState.getInstance();
+
+                if (settings.userCommands == null || settings.userCommands.isEmpty() || !settings.userCommands.containsKey(parsedCommand)) {
+                    showErrorNotification("No commands found");
+                    return;
+                }
+                CommandEntity commandEntity = settings.userCommands.get(parsedCommand);
+
+                boolean flag = actionCaller.call(event, commandEntity.action);
                 if (flag) {
                     showInfoNotification("Running " + parsedCommand);
                 } else {

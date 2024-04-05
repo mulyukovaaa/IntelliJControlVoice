@@ -1,9 +1,9 @@
 package org.ru.itmo.processing.action;
 
-
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.LogLevel;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.ru.itmo.processing.action.commands.CloseAllExceptCurrentFile;
@@ -33,7 +33,6 @@ import org.ru.itmo.processing.action.commands.OpenServices;
 import org.ru.itmo.processing.action.commands.OpenStructure;
 import org.ru.itmo.processing.action.commands.OpenTerminalAction;
 import org.ru.itmo.processing.action.commands.OpenVersionControl;
-import com.intellij.openapi.diagnostic.Logger;
 import org.ru.itmo.processing.action.commands.StartDebugProcess;
 import org.ru.itmo.processing.action.commands.StartRunProcess;
 import org.ru.itmo.processing.action.commands.StopProcess;
@@ -44,45 +43,45 @@ import java.util.function.Consumer;
 
 public class ActionCallerSimple implements ActionCaller {
     private static final Logger log = Logger.getInstance(ActionCallerSimple.class);
-    private static final Map<String, Consumer<AnActionEvent>> map = new HashMap<>();
+    private static final Map<String, Consumer<AnActionEvent>> commands2actions = new HashMap<>();
 
     static {
-        map.put("close", ActionCallerSimple::callCloseCurrentFile);
-        map.put("debug", ActionCallerSimple::callOpenDebug);
-        map.put("new class", ActionCallerSimple::callOpenNewClass);
-        map.put("structure", ActionCallerSimple::callOpenStructure);
-        map.put("open", ActionCallerSimple::callOpenProject);
-        map.put("version control", ActionCallerSimple::callOpenVersionControl);
-        map.put("services", ActionCallerSimple::callOpenServices);
-        map.put("next", ActionCallerSimple::callOpenNextCurrentFile);
-        map.put("previous", ActionCallerSimple::callOpenPreviousCurrentFile);
-        map.put("close all except current", ActionCallerSimple::callCloseAllExceptCurrentFile);
-        map.put("exit", ActionCallerSimple::callExit);
-        map.put("hide debug", ActionCallerSimple::callHideDebug);
-        map.put("hide merge requests", ActionCallerSimple::callHideMergeRequests);
-        map.put("hide project", ActionCallerSimple::callHideProject);
-        map.put("hide pull requests", ActionCallerSimple::callHidePullRequests);
-        map.put("hide run", ActionCallerSimple::callHideRun);
-        map.put("hide services", ActionCallerSimple::callHideServices);
-        map.put("hide structure", ActionCallerSimple::callHideStructure);
-        map.put("hide terminal action", ActionCallerSimple::callHideTerminalAction);
-        map.put("hide version control", ActionCallerSimple::callHideVersionControl);
-        map.put("move cursor to line", ActionCallerSimple::callMoveCursorToLineAction);
-        map.put("open debug", ActionCallerSimple::callOpenDebug);
-        map.put("open merge requests", ActionCallerSimple::callOpenMergeRequests);
-        map.put("open new class", ActionCallerSimple::callOpenNewClass);
-        map.put("open new module", ActionCallerSimple::callOpenNewModule);
-        map.put("open new project", ActionCallerSimple::callOpenNewProject);
-        map.put("open pull requests", ActionCallerSimple::callOpenPullRequests);
-        map.put("open run", ActionCallerSimple::callOpenRun);
-        map.put("open services", ActionCallerSimple::callOpenServices);
-        map.put("open structure", ActionCallerSimple::callOpenStructure);
-        map.put("open terminal action", ActionCallerSimple::callOpenTerminalAction);
-        map.put("open version control", ActionCallerSimple::callOpenVersionControl);
-        map.put("start debug process", ActionCallerSimple::callStartDebugProcess);
-        map.put("start run process", ActionCallerSimple::callStartRunProcess);
-        map.put("stop process", ActionCallerSimple::callStopProcess);
-        map.put("create new class", ActionCallerSimple::callNewClass);
+        commands2actions.put("close", ActionCallerSimple::callCloseCurrentFile);
+        commands2actions.put("debug", ActionCallerSimple::callOpenDebug);
+        commands2actions.put("new class", ActionCallerSimple::callOpenNewClass);
+        commands2actions.put("structure", ActionCallerSimple::callOpenStructure);
+        commands2actions.put("open", ActionCallerSimple::callOpenProject);
+        commands2actions.put("version control", ActionCallerSimple::callOpenVersionControl);
+        commands2actions.put("services", ActionCallerSimple::callOpenServices);
+        commands2actions.put("next", ActionCallerSimple::callOpenNextCurrentFile);
+        commands2actions.put("previous", ActionCallerSimple::callOpenPreviousCurrentFile);
+        commands2actions.put("close all except current", ActionCallerSimple::callCloseAllExceptCurrentFile);
+        commands2actions.put("exit", ActionCallerSimple::callExit);
+        commands2actions.put("hide debug", ActionCallerSimple::callHideDebug);
+        commands2actions.put("hide merge requests", ActionCallerSimple::callHideMergeRequests);
+        commands2actions.put("hide project", ActionCallerSimple::callHideProject);
+        commands2actions.put("hide pull requests", ActionCallerSimple::callHidePullRequests);
+        commands2actions.put("hide run", ActionCallerSimple::callHideRun);
+        commands2actions.put("hide services", ActionCallerSimple::callHideServices);
+        commands2actions.put("hide structure", ActionCallerSimple::callHideStructure);
+        commands2actions.put("hide terminal action", ActionCallerSimple::callHideTerminalAction);
+        commands2actions.put("hide version control", ActionCallerSimple::callHideVersionControl);
+        commands2actions.put("move cursor to line", ActionCallerSimple::callMoveCursorToLineAction);
+        commands2actions.put("open debug", ActionCallerSimple::callOpenDebug);
+        commands2actions.put("open merge requests", ActionCallerSimple::callOpenMergeRequests);
+        commands2actions.put("open new class", ActionCallerSimple::callOpenNewClass);
+        commands2actions.put("open new module", ActionCallerSimple::callOpenNewModule);
+        commands2actions.put("open new project", ActionCallerSimple::callOpenNewProject);
+        commands2actions.put("open pull requests", ActionCallerSimple::callOpenPullRequests);
+        commands2actions.put("open run", ActionCallerSimple::callOpenRun);
+        commands2actions.put("open services", ActionCallerSimple::callOpenServices);
+        commands2actions.put("open structure", ActionCallerSimple::callOpenStructure);
+        commands2actions.put("open terminal action", ActionCallerSimple::callOpenTerminalAction);
+        commands2actions.put("open version control", ActionCallerSimple::callOpenVersionControl);
+        commands2actions.put("start debug process", ActionCallerSimple::callStartDebugProcess);
+        commands2actions.put("start run process", ActionCallerSimple::callStartRunProcess);
+        commands2actions.put("stop process", ActionCallerSimple::callStopProcess);
+        commands2actions.put("create new class", ActionCallerSimple::callNewClass);
     }
 
 
@@ -94,7 +93,7 @@ public class ActionCallerSimple implements ActionCaller {
         log.info(project.getBasePath() + " Command: " + command);
         log.setLevel(LogLevel.DEBUG);
 
-        Consumer<AnActionEvent> action = map.get(command);
+        Consumer<AnActionEvent> action = commands2actions.get(command);
         if (action == null){
             return false;
         }
@@ -227,6 +226,10 @@ public class ActionCallerSimple implements ActionCaller {
     private static void callOpenPreviousCurrentFile(@NotNull AnActionEvent event){
         AnAction action = new OpenPreviousCurrentFile();
         action.actionPerformed(event);
+    }
+
+    public static String[] getCommands() {
+        return commands2actions.keySet().toArray(new String[0]);
     }
 
 
